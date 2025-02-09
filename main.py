@@ -24,14 +24,13 @@ async def format_text(update: Update, context: CallbackContext):
     message = update.message.text
     result = {}
 
-    # Split the message into lines
-    lines = message.splitlines()
-
-    # Process each line
-    for line in lines:
-        parts = line.split(" - ")
-        if len(parts) == 2:
-            result[parts[0]] = parts[1]
+    # Split the message into entries based on spaces or line breaks
+    entries = message.split()
+    
+    # Process each entry in pairs
+    for i in range(0, len(entries), 2):
+        if i + 1 < len(entries):
+            result[entries[i]] = entries[i + 1]
 
     # Update the global json_data variable
     json_data = result
@@ -51,7 +50,7 @@ def run_flask():
 
 def main():
     # Replace 'YOUR_TOKEN' with your actual bot token
-    application = Application.builder().token('6361809314:AAHsd3UMiO7nS_TJMSJhzSS4F3GSBtHkUPo').build()
+    application = Application.builder().token('YOUR_TOKEN_HERE').build()
 
     # Register the handlers
     application.add_handler(CommandHandler('start', start))
