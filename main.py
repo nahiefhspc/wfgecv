@@ -21,15 +21,19 @@ def update_json():
 async def format_text(update: Update, context: CallbackContext):
     global json_data
     # Get the text from the user's message
-    message = update.message.text
+    message = update.message.text.strip()
+    
+    # Split the message into lines, ensuring it's treated properly even if sent all in one line
+    lines = message.splitlines() if '\n' in message else message.split()
+    
     result = {}
 
-    # Split the message into entries based on spaces
-    entries = message.split()
-
-    # Process each entry in pairs, assuming "ID - Phone" format
-    for i in range(0, len(entries) - 1, 2):
-        result[entries[i]] = entries[i + 1]
+    # Process each line or split part
+    for line in lines:
+        if " - " in line:
+            parts = line.split(" - ")
+            if len(parts) == 2:
+                result[parts[0].strip()] = parts[1].strip()
 
     # Update the global json_data variable
     json_data = result
