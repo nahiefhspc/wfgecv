@@ -24,13 +24,12 @@ async def format_text(update: Update, context: CallbackContext):
     message = update.message.text
     result = {}
 
-    # Split the message into entries based on spaces or line breaks
+    # Split the message into entries based on spaces
     entries = message.split()
-    
-    # Process each entry in pairs
-    for i in range(0, len(entries), 2):
-        if i + 1 < len(entries):
-            result[entries[i]] = entries[i + 1]
+
+    # Process each entry in pairs, assuming "ID - Phone" format
+    for i in range(0, len(entries) - 1, 2):
+        result[entries[i]] = entries[i + 1]
 
     # Update the global json_data variable
     json_data = result
