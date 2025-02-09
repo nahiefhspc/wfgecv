@@ -23,8 +23,8 @@ async def format_text(update: Update, context: CallbackContext):
     # Get the text from the user's message
     message = update.message.text.strip()
     
-    # Split the message into lines, ensuring it's treated properly even if sent all in one line
-    lines = message.splitlines() if '\n' in message else message.split()
+    # Split the message into lines or based on spaces if it's a single line
+    lines = message.splitlines() if '\n' in message else message.split('  ')  # Split on double space
     
     result = {}
 
