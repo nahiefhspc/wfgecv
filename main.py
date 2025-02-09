@@ -22,13 +22,16 @@ async def format_text(update: Update, context: CallbackContext):
     global json_data
     # Get the text from the user's message
     message = update.message.text.strip()
-    
-    # Split the message into lines or based on spaces if it's a single line
-    lines = message.splitlines() if '\n' in message else message.split('  ')  # Split on double space
-    
+
+    # Split the message into lines or based on space if it's a single line
+    if '\n' in message:
+        lines = message.splitlines()  # Split on new lines if multi-line
+    else:
+        lines = message.split("  ")  # Split on double space if single line
+
     result = {}
 
-    # Process each line or split part
+    # Process each line or part
     for line in lines:
         if " - " in line:
             parts = line.split(" - ")
