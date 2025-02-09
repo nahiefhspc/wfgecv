@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from threading import Thread
 
 # Initialize Flask app for the server
@@ -23,32 +23,22 @@ async def format_text(update: Update, context: CallbackContext):
     # Get the text from the user's message
     message = update.message.text.strip()
 
-    # Split the message into lines or based on space if it's a single line
-    if '\n' in message:
-        lines = message.splitlines()  # Split on new lines if multi-line
-    else:
-        lines = message.split("  ")  # Split on double space if single line
-
-    result = {}
-
-    # Process each line or part
-    for line in lines:
-        if " - " in line:
-            parts = line.split(" - ")
-            if len(parts) == 2:
-                result[parts[0].strip()] = parts[1].strip()
-
-    # Update the global json_data variable
-    json_data = result
-
-    # Print the result as JSON format in the terminal
-    print(json.dumps(result, indent=4))
-
-    # Send the JSON data back to the Telegram chat
-    await update.message.reply_text(json.dumps(result, indent=4))
-
+    # Try to parse the message as JSON
+    try:
+        # If it's valid JSON, update the global json_data with the parsed content
+        parsed_json = json.loads(message)
+        if isinstance(parsed_json, dict):  # Make sure it's a dictionary
+            json_data = parsed_json
+            print(json.dumps(json_data, indent=4))  # Print JSON data in terminal
+            await update.message.reply_text("JSON data updated successfully!")
+        else:
+            await update.message.reply_text("Please send valid JSON format.")
+    except json.JSONDecodeError:
+        # If the message is not valid JSON, handle it as a non-JSON formatted message
+        await update.message.reply_text("Invalid JSON format. Please send a valid JSON.")
+    
 async def start(update: Update, context: CallbackContext):
-    await update.message.reply_text("Bot started! Send text in the format 'ID - Phone' to get the output.")
+    await update.message.reply_text("Bot started! Send JSON data to update.")
 
 def run_flask():
     """Run the Flask server in the background."""
