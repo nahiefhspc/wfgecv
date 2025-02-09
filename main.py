@@ -39,7 +39,7 @@ async def format_text(update: Update, context: CallbackContext):
     # Print the result as JSON format in the terminal
     print(json.dumps(result, indent=4))
 
-    # Also send the JSON data to the Telegram bot
+    # Send the JSON data back to the Telegram chat
     await update.message.reply_text(json.dumps(result, indent=4))
 
 async def start(update: Update, context: CallbackContext):
