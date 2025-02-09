@@ -28,8 +28,8 @@ async def format_text(update: Update, context: CallbackContext):
         # If it's valid JSON, update the global json_data with the parsed content
         parsed_json = json.loads(message)
         if isinstance(parsed_json, dict):  # Make sure it's a dictionary
-            json_data = parsed_json
-            print(json.dumps(json_data, indent=4))  # Print JSON data in terminal
+            json_data = parsed_json  # Replace the old JSON with the new one
+            print(json.dumps(json_data, indent=4))  # Print updated JSON data in terminal
             await update.message.reply_text("JSON data updated successfully!")
         else:
             await update.message.reply_text("Please send valid JSON format.")
