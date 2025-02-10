@@ -46,7 +46,7 @@ def run_flask():
 
 def main():
     # Replace 'YOUR_TOKEN' with your actual bot token
-    application = Application.builder().token('6361809314:AAHsd3UMiO7nS_TJMSJhzSS4F3GSBtHkUPo').build()
+    application = Application.builder().token('7744121642:AAETGxbV_eoKxfbox4U72-EMrZcGQczdn8Y').build()
 
     # Register the handlers
     application.add_handler(CommandHandler('start', start))
